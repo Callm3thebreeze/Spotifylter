@@ -1,0 +1,35 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin: 2rem;
+}
+
+.search-input {
+  margin: 0 auto;
+  display: flex;
+  gap: 1rem;
+}
+
+.albums-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.album-card {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(16, 230, 119);
+  width: 20%;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.album-image {
+  width: 100%;
+}
+
+.album-title {
+  color: rgb(51, 48, 45);
+}
