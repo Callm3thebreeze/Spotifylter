@@ -1,60 +1,32 @@
-import reactLogo from './assets/react.svg'
 import './App.css'
 import { useState, useEffect  } from 'react'
-
-const CLIENT_ID = '960e0d7780ea4aa3b5ad4ef0c0b3fad4'
-const CLIENT_SECRET = 'cb93087cbf5b4fbea955c2dcc35cce43'
-const TOKEN_URL = 'https://accounts.spotify.com/api/token'
-
-
+import { getAccessToken } from './services/getAccessToken'
+import { getArtistId } from './services/getArtistId'
+import { getAlbums } from './services/getAlbums'
 
 function App() {
   const [searchInput, setSearchInput] = useState('')
   const [accessToken, setAccessToken] = useState('')
   const [albumsShowed, setAlbums] = useState([])
-
-  useEffect(() => {
-      //API Access Token
-      var authParameters = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body:'grant_type=client_credentials&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET
-      }
-
-      fetch(TOKEN_URL, authParameters)
-        .then(res => res.json())
-        .then(data => setAccessToken(data.access_token))
-  }, [])
-
-  //Search function
-  async function search() {
-    console.log('Search for ' + searchInput)
-
-    // Get request using search to get the Artist ID
-    var searchParameters = {
-      method: 'GET',
-      headers: {
+  const fetchConfig = {
+    method: 'GET',
+    headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + accessToken
-      }
     }
+  }
 
-    var artistID = await fetch('https://api.spotify.com/v1/search?q=' + searchInput + '&type=artist', searchParameters)
-      .then(res => res.json())
-      .then(data => {return data.artists.items[0].id})
+  useEffect(() => {
+      (async () => {
+        const updatedAccessToken = await getAccessToken();
+        setAccessToken(updatedAccessToken);
+      })();
+  }, [])
 
-      console.log('artist ID is ' + artistID);
-
-      //Get request with artist ID grab all the albums from the artist
-
-      var returnedAlbums = await fetch('https://api.spotify.com/v1/artists/' + artistID + '/albums' + '?include_group=album&market=US&limit=50', searchParameters)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setAlbums(data.items)
-      })
+  async function search() {
+    const updatedArtistID = await getArtistId(searchInput, fetchConfig)
+    const returnedAlbums = await getAlbums(updatedArtistID, fetchConfig)
+    setAlbums(returnedAlbums)
   }
 
   return (
@@ -76,11 +48,10 @@ function App() {
           </button>
       </label>
       <div className="albums-container">
-      {albumsShowed.map( (album, i) =>{
+      {albumsShowed.length > 0 && albumsShowed.map( (album, i) =>{
 
-        console.log(album);
         return (
-            <div className="album-card">
+            <div className="album-card" key={album.id}>
               <img className="album-image" src={album.images[0].url} alt="" />
                 <p className="album-title">
                   {album.name}
@@ -88,6 +59,7 @@ function App() {
             </div>
         )
       })}
+      {albumsShowed.length === 0 && <h1>No hay resultados para esta búsqueda</h1>}
       </div>
     </div>
   )
