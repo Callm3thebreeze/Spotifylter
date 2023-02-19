@@ -3,16 +3,23 @@
   flex-direction: column;
   gap: 3rem;
   margin: 2rem;
+  padding: 0 5%;
+}
+
+.main-title {
+  color: rgb(18, 203, 129);
+  font-size: 3.5rem;
 }
 
 .search-input {
   margin: 0 auto;
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .albums-container {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 2rem;
 }
@@ -20,16 +27,21 @@
 .album-card {
   display: flex;
   flex-direction: column;
-  background-color: rgb(16, 230, 119);
+  align-items: center;
+  background-color: rgb(18, 203, 129);
   width: 20%;
+  max-width: 20rem;
   padding: 1rem;
   border-radius: 6px;
 }
 
 .album-image {
   width: 100%;
+  border-radius: 6px;
 }
 
 .album-title {
-  color: rgb(51, 48, 45);
+  color: rgb(39, 41, 42);
+  font-weight: 800;
+  font-size: 1.3rem;
 }

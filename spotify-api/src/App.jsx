@@ -59,6 +59,7 @@ function App() {
 
   return (
     <div className="App">
+      <h1 className='main-title'>Spotyfilter</h1>
       <label className='search-input'>
         Busca aquí:
         <input 
@@ -80,7 +81,7 @@ function App() {
         console.log(album);
         return (
             <div className="album-card">
-              <img src={album.images[0].url} alt="" />
+              <img className="album-image" src={album.images[0].url} alt="" />
                 <p className="album-title">
                   {album.name}
                 </p>
