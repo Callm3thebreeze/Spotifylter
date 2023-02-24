@@ -1,76 +1,65 @@
 import './App.css'
-import { useState, useEffect  } from 'react'
+import { useState, useEffect } from 'react'
 import { getAccessToken } from './services/getAccessToken'
 import { getArtistId } from './services/getArtistId'
 import { getAlbums } from './services/getAlbums'
+import { Albums } from './components/Albums.jsx'
 
 function App() {
-  const [searchInput, setSearchInput] = useState('')
-  const [accessToken, setAccessToken] = useState('')
-  const [albumsShowed, setAlbums] = useState([])
-  const fetchConfig = {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + accessToken
+    const [searchInput, setSearchInput] = useState('')
+    const [accessToken, setAccessToken] = useState('')
+    const [albums, setAlbums] = useState([])
+    const fetchConfig = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + accessToken
+        }
     }
-  }
 
-  useEffect(() => {
-      (async () => {
-        const updatedAccessToken = await getAccessToken();
-        setAccessToken(updatedAccessToken);
-      })();
-  }, [])
+    useEffect(() => {
+        (async () => {
+            const updatedAccessToken = await getAccessToken();
+            setAccessToken(updatedAccessToken);
+        })();
+    }, [])
 
-  async function search() {
-    const updatedArtistID = await getArtistId(searchInput, fetchConfig)
-    const returnedAlbums = await getAlbums(updatedArtistID, fetchConfig)
-    setAlbums(returnedAlbums)
-  }
+    async function search() {
+        const updatedArtistID = await getArtistId(searchInput, fetchConfig)
+        const returnedAlbums = await getAlbums(updatedArtistID, fetchConfig)
+        setAlbums(returnedAlbums)
+        console.log(albums)
+    }
 
-  return (
-    <div className="App">
 
-      <header>
-        <h1 className='main-title'>Spotyfilter</h1>
-        <label className='search-input'>
-          Busca aquí:
-          <input 
-            value={searchInput} 
-            onChange={e => setSearchInput(e.target.value)} 
-            onKeyDown={ e => {
-              if(e.key=='Enter') {
-                search();
-              }
-            }}
-            />
-            <button type="submit" onClick={() => { search()}}>
-              Buscar
-            </button>
-        </label>
-      </header>
+    return (
+        <div className="App">
 
-      <main>
-        <div className="albums-container">
-        {albumsShowed.length > 0 && albumsShowed.map( (album, i) =>{
+            <header>
+                <h1 className='main-title'>Spotyfilter</h1>
+                <label className='search-input'>
+                    Busca aquí:
+                    <input
+                        value={searchInput}
+                        onChange={e => setSearchInput(e.target.value)}
+                        onKeyDown={e => {
+                            if (e.key == 'Enter') {
+                                search();
+                            }
+                        }}
+                    />
+                    <button type="submit" onClick={() => { search() }}>
+                        Buscar
+                    </button>
+                </label>
+            </header>
 
-          return (
-              <div className="album-card" key={album.id}>
-                <img className="album-image" src={album.images[0].url} alt="" />
-                  <p className="album-title">
-                    {album.name}
-                  </p>
-              </div>
-          )
-        })}
-        {albumsShowed.length === 0 && <h1>No hay  resultados para esta búsqueda</h1>}
+            <main>
+                <Albums albums={albums} />
+            </main>
+
         </div>
-      </main>
-
-
-    </div>
-  )
+    )
 }
 
 export default App

@@ -1,6 +1,22 @@
-export async function getAlbums(artistId, fetchConfig) {
+export function getAlbums(artistId, fetchConfig) {
 
-    return fetch('https://api.spotify.com/v1/artists/' + artistId + '/albums' + '?include_group=album&market=US&limit=50', fetchConfig)
+    try{
+        return fetch('https://api.spotify.com/v1/artists/' + artistId + '/albums' + '?include_group=album&market=US&limit=50', fetchConfig)
         .then(res => res.json())
-        .then(data => data.items)
+        .then(data => 
+            data.items
+            
+        )
+
+        //Ejemplo de mapeo del objeto obtenido
+
+        // const mappedAlbums = albums?.map(album => ({
+        //     x: album.id,
+        //     y: album.name,
+        //     j: album.images,
+        // }))
+
+    } catch (e) {
+        throw new Error('Error searching albums')
+    }
 }
