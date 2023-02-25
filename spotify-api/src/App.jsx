@@ -28,7 +28,11 @@ function App() {
         const updatedArtistID = await getArtistId(searchInput, fetchConfig)
         const returnedAlbums = await getAlbums(updatedArtistID, fetchConfig)
         setAlbums(returnedAlbums)
-        console.log(albums)
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        search()
     }
 
 
@@ -37,21 +41,20 @@ function App() {
 
             <header>
                 <h1 className='main-title'>Spotyfilter</h1>
-                <label className='search-input'>
-                    Busca aquí:
+                <form className='search-form' onSubmit={handleSubmit}>
+                    <label className=''>
+                        Busca aquí:
+                    </label>
                     <input
                         value={searchInput}
                         onChange={e => setSearchInput(e.target.value)}
-                        onKeyDown={e => {
-                            if (e.key == 'Enter') {
-                                search();
-                            }
-                        }}
                     />
-                    <button type="submit" onClick={() => { search() }}>
+                    <button type="submit">
                         Buscar
                     </button>
-                </label>
+                </form>
+                
+                
             </header>
 
             <main>

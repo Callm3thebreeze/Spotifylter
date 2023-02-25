@@ -1,5 +1,4 @@
 function ListOfAlbums({ albums }) {
-  console.log(albums)
   return (
     <div className="albums-container">
       { 

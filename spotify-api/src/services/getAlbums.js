@@ -15,6 +15,7 @@ export function getAlbums(artistId, fetchConfig) {
         //     y: album.name,
         //     j: album.images,
         // }))
+        // return {albums: mappedAlbums}
 
     } catch (e) {
         throw new Error('Error searching albums')
