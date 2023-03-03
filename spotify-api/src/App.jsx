@@ -2,13 +2,14 @@ import './App.css'
 import { useState, useEffect } from 'react'
 import { getAccessToken } from './services/getAccessToken'
 import { getArtistId } from './services/getArtistId'
-import { getAlbums } from './services/getAlbums'
+import { searchAlbums } from './services/searchAlbums'
 import { Albums } from './components/Albums.jsx'
+import { useAlbums } from './hooks/useAlbums'
 
 function App() {
     const [searchInput, setSearchInput] = useState('')
     const [accessToken, setAccessToken] = useState('')
-    const [albums, setAlbums] = useState([])
+    const [artistId, setArtistId] = useState('')
     const fetchConfig = {
         method: 'GET',
         headers: {
@@ -16,6 +17,7 @@ function App() {
             'Authorization': 'Bearer ' + accessToken
         }
     }
+    const {albums, getAlbums } = useAlbums({ search: searchInput, id: artistId, fetchConfig })
 
     useEffect(() => {
         (async () => {
@@ -25,14 +27,15 @@ function App() {
     }, [])
 
     async function search() {
-        const updatedArtistID = await getArtistId(searchInput, fetchConfig)
-        const returnedAlbums = await getAlbums(updatedArtistID, fetchConfig)
-        setAlbums(returnedAlbums)
+        console.log("ahora seteamos el id del artista")
+        const updatedId = await getArtistId(searchInput, fetchConfig)
+        setArtistId(updatedId)
+        getAlbums(updatedId)
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        search()
+        await search()
     }
 
 
