@@ -17,7 +17,7 @@ function App() {
             'Authorization': 'Bearer ' + accessToken
         }
     }
-    const {albums, getAlbums } = useAlbums({ search: searchInput, id: artistId, fetchConfig })
+    const {albums, getAlbums, loading} = useAlbums({ fetchConfig })
 
     useEffect(() => {
         (async () => {
@@ -29,7 +29,7 @@ function App() {
     async function search() {
         const updatedId = await getArtistId(searchInput, fetchConfig)
         setArtistId(updatedId)
-        getAlbums(updatedId)
+        getAlbums(searchInput, updatedId)
     }
 
     const handleSubmit = async (event) => {
@@ -53,13 +53,13 @@ function App() {
                     <button type="submit">
                         Buscar
                     </button>
-                </form>
-                
-                
+                </form>                
             </header>
 
             <main>
-                <Albums albums={albums} />
+            {
+                loading ? <p>Cargando...</p> : <Albums albums={albums} />
+            }
             </main>
 
         </div>
