@@ -5,7 +5,6 @@ export function useAlbums({search, id, fetchConfig}) {
     const [albums, setAlbums] = useState([])
 
     const getAlbums = async () => {
-        console.log({search, id, fetchConfig})
         const newAlbums = await searchAlbums(id, fetchConfig)
         setAlbums(newAlbums)
     }

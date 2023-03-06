@@ -13,7 +13,6 @@ export async function getAccessToken() {
         const response = await fetch('https://accounts.spotify.com/api/token', authParameters)
         const json = await response.json()
         const token = json.access_token
-        console.log("Obteniendo token: " + token)
         return token
 
     } catch (e) {

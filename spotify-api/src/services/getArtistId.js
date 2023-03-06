@@ -4,7 +4,6 @@ export async function getArtistId(searchInput, fetchConfig) {
         const response = await fetch('https://api.spotify.com/v1/search?q=' + searchInput + '&type=artist', fetchConfig)
         const json = await response.json()
         const id = json.artists.items[0].id
-        console.log("Id del artista: " + id)
         return id
 
 

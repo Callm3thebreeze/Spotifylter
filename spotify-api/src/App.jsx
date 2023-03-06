@@ -2,11 +2,11 @@ import './App.css'
 import { useState, useEffect } from 'react'
 import { getAccessToken } from './services/getAccessToken'
 import { getArtistId } from './services/getArtistId'
-import { searchAlbums } from './services/searchAlbums'
 import { Albums } from './components/Albums.jsx'
 import { useAlbums } from './hooks/useAlbums'
 
 function App() {
+
     const [searchInput, setSearchInput] = useState('')
     const [accessToken, setAccessToken] = useState('')
     const [artistId, setArtistId] = useState('')
@@ -27,7 +27,6 @@ function App() {
     }, [])
 
     async function search() {
-        console.log("ahora seteamos el id del artista")
         const updatedId = await getArtistId(searchInput, fetchConfig)
         setArtistId(updatedId)
         getAlbums(updatedId)
@@ -37,7 +36,6 @@ function App() {
         event.preventDefault()
         await search()
     }
-
 
     return (
         <div className="App">
