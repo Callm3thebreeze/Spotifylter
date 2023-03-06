@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { searchAlbums } from "../services/searchAlbums";
 
-export function useAlbums({search, id, fetchConfig}) {
+export function useAlbums({id, fetchConfig}) {
     const [albums, setAlbums] = useState([])
 
     const getAlbums = async () => {
