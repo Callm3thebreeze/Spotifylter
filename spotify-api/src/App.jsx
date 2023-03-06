@@ -9,7 +9,6 @@ function App() {
 
     const [searchInput, setSearchInput] = useState('')
     const [accessToken, setAccessToken] = useState('')
-    const [artistId, setArtistId] = useState('')
     const fetchConfig = {
         method: 'GET',
         headers: {
@@ -27,9 +26,8 @@ function App() {
     }, [])
 
     async function search() {
-        const updatedId = await getArtistId(searchInput, fetchConfig)
-        setArtistId(updatedId)
-        getAlbums(searchInput, updatedId)
+        const artistId = await getArtistId(searchInput, fetchConfig)
+        getAlbums(searchInput, artistId)
     }
 
     const handleSubmit = async (event) => {
