@@ -39,8 +39,7 @@ function App() {
         }
     }
     const { albums, getAlbums, loading } = useAlbums({ fetchConfig })
-
-    console.log("isFirstInput value: " + isFirstInput.current)
+    
     useEffect(() => {
         (async () => {
             const updatedAccessToken = await getAccessToken();

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { searchAlbums } from "../services/searchAlbums";
 
 export function useAlbums({ fetchConfig }) {
@@ -7,15 +7,16 @@ export function useAlbums({ fetchConfig }) {
     const previousSearch = useRef(null)
     
 
-    const getAlbums = async (search, id) => {
+    const getAlbums = useCallback( async (search, id) => {
         if (search === previousSearch.current) return
 
+        console.log("se monta getAlbums")
         setLoading(true)
         previousSearch.current = search
         const newAlbums = await searchAlbums(id, fetchConfig)
         setAlbums(newAlbums)
         setLoading(false)
-    }
+    }, [])
         
     return { albums, getAlbums, loading}
 }
