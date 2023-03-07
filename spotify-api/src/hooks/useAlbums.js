@@ -10,7 +10,6 @@ export function useAlbums({ fetchConfig }) {
     const getAlbums = useCallback( async (search, id) => {
         if (search === previousSearch.current) return
 
-        console.log("se monta getAlbums")
         setLoading(true)
         previousSearch.current = search
         const newAlbums = await searchAlbums(id, fetchConfig)
