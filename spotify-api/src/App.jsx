@@ -1,13 +1,35 @@
 import './App.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getAccessToken } from './services/getAccessToken'
 import { getArtistId } from './services/getArtistId'
 import { Albums } from './components/Albums.jsx'
 import { useAlbums } from './hooks/useAlbums'
 
+function useSearch() {
+    const [searchInput, setSearchInput] = useState('')
+    const [error, setError] = useState(null)
+    const isFirstInput = useRef(true)
+
+    useEffect(() => {
+        if (isFirstInput.current) {
+            isFirstInput.current = searchInput === ''
+            return
+        }
+
+        if (searchInput === '') {
+            setError('Escriba el artista que desea buscar')
+            return
+        }
+
+        setError(null)
+    }, [searchInput])
+
+    return { searchInput, setSearchInput, isFirstInput, error }
+}
+
 function App() {
 
-    const [searchInput, setSearchInput] = useState('')
+    const { searchInput, setSearchInput, isFirstInput, error } = useSearch()
     const [accessToken, setAccessToken] = useState('')
     const fetchConfig = {
         method: 'GET',
@@ -16,8 +38,9 @@ function App() {
             'Authorization': 'Bearer ' + accessToken
         }
     }
-    const {albums, getAlbums, loading} = useAlbums({ fetchConfig })
+    const { albums, getAlbums, loading } = useAlbums({ fetchConfig })
 
+    console.log("isFirstInput value: " + isFirstInput.current)
     useEffect(() => {
         (async () => {
             const updatedAccessToken = await getAccessToken();
@@ -51,14 +74,15 @@ function App() {
                     <button type="submit">
                         Buscar
                     </button>
-                </form>                
+                </form>
+                {error && <p style={{ color: 'orange' }}>{error}</p>}
             </header>
 
-            <main>
             {
-                loading ? <p>Cargando...</p> : <Albums albums={albums} />
-            }
-            </main>
+                isFirstInput.current ? 
+                <main> <h1>Hora de buscar musicote</h1> </main> 
+                : <main> { loading ? <h1>Cargando...</h1> : <Albums albums={albums} /> } </main>
+            }           
 
         </div>
     )
