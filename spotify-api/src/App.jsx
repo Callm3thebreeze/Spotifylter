@@ -1,36 +1,15 @@
 import './App.css'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect} from 'react'
 import { getAccessToken } from './services/getAccessToken'
 import { getArtistId } from './services/getArtistId'
 import { Albums } from './components/Albums.jsx'
 import { useAlbums } from './hooks/useAlbums'
-
-function useSearch() {
-    const [searchInput, setSearchInput] = useState('')
-    const [error, setError] = useState(null)
-    const isFirstInput = useRef(true)
-
-    useEffect(() => {
-        if (isFirstInput.current) {
-            isFirstInput.current = searchInput === ''
-            return
-        }
-
-        if (searchInput === '') {
-            setError('Escriba el artista que desea buscar')
-            return
-        }
-
-        setError(null)
-    }, [searchInput])
-
-    return { searchInput, setSearchInput, isFirstInput, error }
-}
+import { useSearch } from './hooks/useSearch'
 
 function App() {
 
     const { searchInput, setSearchInput, isFirstInput, error } = useSearch()
-    const [accessToken, setAccessToken] = useState('')
+    const [ accessToken, setAccessToken ] = useState('')
     const fetchConfig = {
         method: 'GET',
         headers: {
